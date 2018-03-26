@@ -65,6 +65,7 @@ while 1:
         else:
             # Notify client of new user
             responseDict["responseType"] = "new user request"
+
     elif requestType == "username_verify_request":
         # Parse data dictionary into email, password, username
         if ("email" in requestData) and ("password" in requestData) and ("username" in requestData):
@@ -91,6 +92,7 @@ while 1:
             emailDict = {}
             emailDict["username"] = username
             emailDict["password"] = password
+            emailDict["alarmList"] = {}
 
             # Then add email dictionary to userbase
             userbase[email] = emailDict
@@ -101,6 +103,14 @@ while 1:
 
             # Notify client that the username is available so it can finish registration
             responseDict["responseType"] = "username available"
+
+    elif requestType == "full_alarm_sync":
+        #Get user email that is requesting full alarm list
+        print requestData
+        userEmail = requestData["email"]
+        userEmailDict = userbase[userEmail]
+        responseDict["responseData"] = userEmailDict["alarmList"]
+
     else:
         responseDict["responseType"] = "UNRECOGNIZED REQUEST"
         print responseDict["responseType"]
