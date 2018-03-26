@@ -109,7 +109,16 @@ while 1:
         print requestData
         userEmail = requestData["email"]
         userEmailDict = userbase[userEmail]
-        responseDict["responseData"] = userEmailDict["alarmList"]
+
+        # If there are alarms, send them
+        if userEmailDict["alarmList"]:
+            responseDict["responseType"] = "alarms present"
+            responseDict["responseData"] = userEmailDict["alarmList"]
+        else:
+            responseDict["responseType"] = "alarms absent"
+            responseDict["responseData"] = ""
+
+
 
     else:
         responseDict["responseType"] = "UNRECOGNIZED REQUEST"
