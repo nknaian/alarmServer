@@ -118,7 +118,20 @@ while 1:
             responseDict["responseType"] = "alarms absent"
             responseDict["responseData"] = ""
 
+    elif requestType == "alarm_send":
+        targetUser = requestData["targetUser"]
+        url = requestData["url"]
 
+        for key in userbase:
+            userEmail = userbase[key]
+            if userEmail["username"] == targetUser:
+                if(userEmail["alarmList"] != ""):
+                    userEmail["alarmList"] += ","
+                userEmail["alarmList"] += url
+
+                # Then save dictionary to json file
+                with open('database.txt', 'w') as outfile:
+                    json.dump(database, outfile)
 
     else:
         responseDict["responseType"] = "UNRECOGNIZED REQUEST"
